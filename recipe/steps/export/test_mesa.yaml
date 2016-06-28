@@ -1,0 +1,12 @@
+Test Mesa Installation
+======================
+$ ssh -X reims.g5k
+$ ssh root@stremi-7
+# apt-get install mesa-utils
+### will apt install mesa-dev?
+# exit
+$ ssh -X stremi-7
+$ glxgears
+$ mpirun -np 4 glxgears
+## 4 Windows should open in your desktop
+

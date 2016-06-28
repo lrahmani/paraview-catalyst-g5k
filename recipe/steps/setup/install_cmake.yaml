@@ -1,0 +1,5 @@
+- cmake_install: 
+  - exec_in: apt-get update 
+  - exec_in: apt-get install cmake --assume-yes
+
+
