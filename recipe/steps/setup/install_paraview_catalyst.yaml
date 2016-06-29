@@ -1,47 +1,24 @@
 - package: ./ParaView-v5.0.0-source.tar.gz
 - prefix: /opt/
 - package_name: $(basename $${package})
-#- src_folder: $(echo ${$${package_name}}%.*.*)
 
 - install_dependencies:
-  # TOFIX is libphonon needed?
-  #- exec_in: apt-get install libphonon-dev libphonon4 libxt-dev cmake-curses-gui python-dev --assume-yes
   - exec_in: apt-get install libxt-dev freeglut3-dev cmake-curses-gui python-dev --assume-yes
 
 - get_paraview:
   # TOFIX check if it's the root home directory
   - exec_in: cd && tar -xzvf $${package}
   # TOFIX is the working directory the same or get reset to a default one
-  # TOFIX extract 
-  #- exec_in: cd && cd $${src_folder}
   - exec_in: export package_name=$${package_name} && export src_folder=$(echo ${package_name%.*.*})
   - exec_in: cd && cd ${src_folder}
-  #- exec_in: cd ParaView-v5.0.0-source/
 
 - build_paraview:
   # TOFIX change the build directory name to dynamic using source_folder variable
   - exec_in: cd  && mkdir -p ParaView-v5.0.0-build && cd ParaView-v5.0.0-build
-  # TOFIX clean the build directory
-  #- exec_in: rm *-rf
-#ccmake ../ParaView-v5.0.0-source/
-  - exec_in: cd ~/ParaView-v5.0.0-build && cmake ~/ParaView-v5.0.0-source/ -G "Unix Makefiles" -DPARAVIEW_BUILD_QT_GUI=OFF -DPARAVIEW_ENABLE_CATALYST=ON -DPARAVIEW_ENABLE_PYTHON=ON -DPARAVIEW_USE_MPI=ON -DCMAKE_INSTALL_PREFIX=$${prefix} -DPARAVIEW_INSTALL_DEVELOPMENT_FILES=ON
-  # TOFIX does this work? does it make any sens? is there a way to enable and disbale it in the recipe
-  # TOFIX Nope! it blocks the build
+  - exec_in: rm *-rf
+  - exec_in: cd ~/ParaView-v5.0.0-build && cmake ~/ParaView-v5.0.0-source/ -G "Unix Makefiles" -DPARAVIEW_BUILD_QT_GUI=OFF -DPARAVIEW_ENABLE_CATALYST=ON -DPARAVIEW_ENABLE_PYTHON=ON -DPARAVIEW_USE_MPI=ON -DCMAKE_INSTALL_PREFIX=$${prefix} -DBUILD_TESTING=OFF -DPARAVIEW_INSTALL_DEVELOPMENT_FILES=ON
   # TOFIX add a checkpoint
-  #- exec_in: cd ~/ParaView-v5.0.0-build && ccmake .
   - exec_in: checkpoint!!!
   - exec_in: cd ~/ParaView-v5.0.0-build && make -j24 && make -j24 install
 
-
-# apt-get install libphonon-dev libphonon4 qt4-dev-tools libqt4-core libqt4-gui qt4-qmake libxt-dev cmake-curses-gui libqt4-opengl-dev
-# cmake ../ParaView-v5.0.0-source/ -DPARAVIEW_BUILD_QT_GUI=OFF -DPARAVIEW_ENABLE_CATALYST=ON -DPARAVIEW_ENABLE_PYTHON=ON -DPARAVIEW_USE_MPI=ON -DCMAKE_INSTALL_PREFIX=/opt/
-
-#cd
-#tar -xzvf /home/lrahmani/Software/ParaView-v5.0.0-source.tar.gz 
-#cd ParaView-v5.0.0-source/
-# apt-get install libphonon-dev libphonon4 qt4-dev-tools libqt4-core libqt4-gui qt4-qmake libxt-dev cmake-curses-gui libqt4-opengl-dev
-#apt-get install libphonon-dev libphonon4 libxt-dev cmake-curses-gui python-dev
-#cd .. && mkdir ParaView-v5.0.0-build && cd ParaView-v5.0.0-build
-#ccmake ../ParaView-v5.0.0-source/
-# cmake ../ParaView-v5.0.0-source/ -DPARAVIEW_BUILD_QT_GUI=OFF -DPARAVIEW_ENABLE_CATALYST=ON -DPARAVIEW_ENABLE_PYTHON=ON -DPARAVIEW_USE_MPI=ON -DPARAVIEW_ENABLE_XDMF3=ON(Needs boost) -DCMAKE_INSTALL_PREFIX=/opt/ -DPARAVIEW_INSTALL_DEVELOPMENT_FILES=ON ( HDF5_LIB  HDF5_LIB-NOTFOUND)
 
