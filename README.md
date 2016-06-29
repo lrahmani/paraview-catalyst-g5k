@@ -24,3 +24,12 @@ kameleon build paraview-g5k.yaml
 When building the recipe for first times:
 - Use checkpoint mechanism to avoid redeploying the base image for the same reservation
 - Use `--debug` option when you get inexplicable errors or when the build hangs 
+
+To change ParaView's build configuration, `install_paraview_catalyst` step will hang
+after the first build. You can then login into the `in` context and use `ccmake`:
+
+```bash
+cd ~/ParaView-v5.0.0-build && ccmake .
+```
+Once done, generate new Makefiles, exit ccmake, logout form `in` context and continue
+the build process.
