@@ -1,136 +1,59 @@
-1. Donwload the sources
-1.1 On your laptop side
-wget 
-wget 
-rcp   reims.g5k:~/Software/
-ssh reims.g5k
-(Here is my ssh_config file)
-1.2 On G5k Side
-chmod +r Software/mesa-11.0.0-rc3.tar.gz
-ssh root@stremi-16
-tar -xzvf /home/lrahmani/Software/mesa-11.0.0-rc3.tar.gz
-cd mesa-11.0.0-rc3/
-apt-get install llvm-dev
-apt-get install libdrm-dev
-apt-get build-dep mesa
-dpkg-query -L libdrm-dev | grep libdrm.a
-dpkg-query -L libdrm-dev | grep drm.h
-export LIBDRM_CFLAGS="-I/usr/include -I$/usr/include/libdrm"
-export LIBDRM_LIBS="-L/usr/lib/x86 -ldrm"
-./configure \
-    CXXFLAGS="-O2 -g -DDEFAULT_SOFTWARE_DEPTH_BITS=31" \
-    CFLAGS="-O2 -g -DDEFAULT_SOFTWARE_DEPTH_BITS=31" \
-    --disable-xvmc \
-    --disable-glx \
-    --disable-dri \
-    --with-dri-drivers="" \
-    --with-gallium-drivers="" \
-    --enable-texture-float \
-    # DO NOT disable shared-libglapi
-    --disable-egl \
-    --with-egl-platforms="" \
-    --enable-osmesa \
-    --enable-gallium-llvm=no \
-    --prefix=/opt/
-./configure \
-    CXXFLAGS="-O2 -g -DDEFAULT_SOFTWARE_DEPTH_BITS=31" \
-    CFLAGS="-O2 -g -DDEFAULT_SOFTWARE_DEPTH_BITS=31" \
-    --disable-xvmc \
-    --disable-glx \
-    --disable-dri \
-    --with-dri-drivers="" \
-    --with-gallium-drivers="" \
-    --enable-texture-float \
-    --disable-egl \
-    --with-egl-platforms="" \
-    --enable-osmesa \
-    --enable-gallium-llvm=no \
-    --prefix=/opt/
-./configure \
-    CXXFLAGS="-O2 -g -DDEFAULT_SOFTWARE_DEPTH_BITS=31" \
-    CFLAGS="-O2 -g -DDEFAULT_SOFTWARE_DEPTH_BITS=31" \
-    --disable-xvmc \
-    --disable-glx \
-    --disable-dri \
-    --with-dri-drivers="" \
-    --with-gallium-drivers="swrast" \
-    --enable-texture-float \
-    --disable-egl \
-    --with-egl-platforms="" \
-    --enable-gallium-osmesa \
-    --enable-gallium-llvm=yes \
-    --with-llvm-shared-libs \
-    --prefix=/opt/
-# llvm later version on debian http://llvm.org/apt/
-make -j24
-make -j24 install
-cd
+- package: ./mesa-11.0.0-rc3.tar.gz
+- prefix: /opt/
+- package_name: $(basename $${package})
 
-wget 
-wget 
-rcp   reims.g5k:~/Software/
-ssh reims.g5k
-(Here is my ssh_config file)
-1.2 On G5k Side
-chmod +r Software/mesa-11.0.0-rc3.tar.gz
-ssh root@stremi-16
-#
-# IS BUILDING MESA REALLY NEEDED ???????????????????????????????????
-#
-tar -xzvf /home/lrahmani/Software/mesa-11.0.0-rc3.tar.gz
-cd mesa-11.0.0-rc3/
-apt-get install llvm-dev
-apt-get install libdrm-dev
-dpkg-query -L libdrm-dev | grep libdrm.a
-dpkg-query -L libdrm-dev | grep drm.h
-export LIBDRM_CFLAGS="-I/usr/include -I$/usr/include/libdrm"
-export LIBDRM_LIBS="-L/usr/lib/x86 -ldrm"
-./configure \
-    CXXFLAGS="-O2 -g -DDEFAULT_SOFTWARE_DEPTH_BITS=31" \
-    CFLAGS="-O2 -g -DDEFAULT_SOFTWARE_DEPTH_BITS=31" \
-    --disable-xvmc \
-    --disable-glx \
-    --disable-dri \
-    --with-dri-drivers="" \
-    --with-gallium-drivers="" \
-    --enable-texture-float \
-    # DO NOT disable shared-libglapi
-    --disable-egl \
-    --with-egl-platforms="" \
-    --enable-osmesa \
-    --enable-gallium-llvm=no \
-    --prefix=/opt/
-./configure \
-    CXXFLAGS="-O2 -g -DDEFAULT_SOFTWARE_DEPTH_BITS=31" \
-    CFLAGS="-O2 -g -DDEFAULT_SOFTWARE_DEPTH_BITS=31" \
-    --disable-xvmc \
-    --disable-glx \
-    --disable-dri \
-    --with-dri-drivers="" \
-    --with-gallium-drivers="" \
-    --enable-texture-float \
-    --disable-egl \
-    --with-egl-platforms="" \
-    --enable-osmesa \
-    --enable-gallium-llvm=no \
-    --prefix=/opt/
-./configure \
-    CXXFLAGS="-O2 -g -DDEFAULT_SOFTWARE_DEPTH_BITS=31" \
-    CFLAGS="-O2 -g -DDEFAULT_SOFTWARE_DEPTH_BITS=31" \
-    --disable-xvmc \
-    --disable-glx \
-    --disable-dri \
-    --with-dri-drivers="" \
-    --with-gallium-drivers="swrast" \
-    --enable-texture-float \
-    --disable-egl \
-    --with-egl-platforms="" \
-    --enable-gallium-osmesa \
-    --enable-gallium-llvm=yes \
-    --with-llvm-shared-libs \
-    --prefix=/opt/
-# llvm later version on debian http://llvm.org/apt/
-make -j24
-make -j24 install
-cd
+- install_dependencies:
+  # TOFIX is update needed?
+  # TOFIX configure apt-get to assume-yes by default
+  - exec_in: apt-get update
+  #- exec_in: apt-get install llvm-dev libdrm-dev
+  - exec_in: apt-get  build-dep mesa --assume-yes
+  # Needed for autoreconf
+  - exec_in: apt-get install libtool --assume-yes
+  # TOFIX are exports needed when using build-dep mesa
+  #- exec_in: export LIBDRM_CFLAGS="-I/usr/include -I$/usr/include/libdrm"
+  #- exec_in: export LIBDRM_LIBS="-L/usr/lib/x86 -ldrm"
 
+- get_mesa_src:
+  # TOFIX check if it's the root home directory
+  - exec_in: cd && tar -xzvf $${package}
+  # TOFIX is the working directory the same or get reset to a default one
+  - exec_in: export package_name=$${package_name} && export src_folder=$(echo ${package_name%.*.*})
+  - exec_in: cd && cd ${src_folder}
+
+- build_mesa:
+  # INFO the configuration is the one proposed by paraview developers
+  # http://www.paraview.org/Wiki/ParaView_And_Mesa_3D#Installing_OSMesa_Gallium_llvmpipe_state-tracker	
+  - exec_in: cd && cd ${src_folder}
+  # TOFIX Generates No rule to make target error
+  #- exec_in: make -j24 distclean
+  - exec_in: autoreconf -fi
+  # TOFIX newer libdrm is needed (debian8 is ok but not debian7)
+  - exec_in: cd && tar -xzvf /home/lrahmani/packages/libdrm-2.4.67.tar.gz
+  - exec_in: apt-get remove libdrm-dev
+  - exec_in: apt-get build-dep libdrm-dev
+  - exec_in: cd ~/libdrm-2.4.67/ && ./configure --prefix=/opt/libdrm
+  - exec_in: make -j24 && make -j24 install 
+  - exec_in: export LIBDRM_CFLAGS="-I/opt/libdrm"
+  - exec_in: export LIBDRM_LIBS="-L/opt/lib -ldrm"
+  # TOFIX "No package 'dri3proto' found"
+  # TOFIX still not found ...
+  - exec_in: apt-get install x11proto-xf86dri-dev --assume-yes
+  - exec_in: ./configure \
+      # TOFIX configure don't accept any parameter ...
+      CXXFLAGS="-O2 -g -DDEFAULT_SOFTWARE_DEPTH_BITS=31" \
+      CFLAGS="-O2 -g -DDEFAULT_SOFTWARE_DEPTH_BITS=31" \
+      --disable-xvmc \
+      --disable-glx \
+      --disable-dri \
+      --with-dri-drivers="" \
+      --with-gallium-drivers="swrast" \
+      --enable-texture-float \
+      --disable-egl \
+      --with-egl-platforms="" \
+      --enable-gallium-osmesa \
+      --enable-gallium-llvm=yes \
+      --with-llvm-shared-libs \
+      --prefix=$${prefix}
+  # llvm later version on debian http://llvm.org/apt/
+  - exec_in: cd ~/${src_folder} && make -j24 && make -j24 install

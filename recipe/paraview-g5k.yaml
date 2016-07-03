@@ -21,10 +21,10 @@ global:
 
     # Build variables
     install_prefix: /opt/$${kameleon_recipe_name}
-    # TOFIX don't forget to check that the folder has read access to every one
+    # TOFIX don't forget to check that the folder has read access to others
     pkgs_repo: /home/lrahmani/packages
     
-# TOFIX comment @base to avoid default re-configuration for the same reservation
+# TOFIX comment @base to avoid re-deployement of base image for the same reservation
 # TOFIX uncomment it if you want to work on clean base image
 bootstrap:
   - "@base"
@@ -36,18 +36,17 @@ setup:
 #  - install_mpich:
   - install_cmake:
   - install_hdf5:
-    # TOFIX don't need prefix when installed with apt
-    # TOFIX how to make this transparent to the rest of recipe, 
-    # TOFIX  in the case where hdf5_src is used
-    #- prefix: $${install_prefix} 
-#  - install_hdf5_src:
+  # TOFIX don't need prefix when installed with apt
+  # TOFIX how to make this transparent to the rest of recipe, 
   # TOCHECK mesa with GPUs
-  - install_mesa:
-#  - install_mesa_src:
-# TOFIX change to install_paraview_catalyst_src
-  - install_paraview_catalyst:
+  #- install_mesa:
+  - install_mesa_src:
     - prefix: $${install_prefix}
-    - package: $${pkgs_repo}/ParaView-v5.0.0-source.tar.gz
+    - package: $${pkgs_repo}/mesa-11.0.0-rc3.tar.gz
+  # TOFIX change to install_paraview_catalyst_src
+  #- install_paraview_catalyst:
+  #  - prefix: $${install_prefix}
+  #  - package: $${pkgs_repo}/ParaView-v5.0.0-source.tar.gz
 
 export:
 #  - test_mesa:

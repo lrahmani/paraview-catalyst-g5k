@@ -15,8 +15,27 @@
 - build_paraview:
   # TOFIX change the build directory name to dynamic using source_folder variable
   - exec_in: cd  && mkdir -p ParaView-v5.0.0-build && cd ParaView-v5.0.0-build
-  - exec_in: rm *-rf
-  - exec_in: cd ~/ParaView-v5.0.0-build && cmake ~/ParaView-v5.0.0-source/ -G "Unix Makefiles" -DPARAVIEW_BUILD_QT_GUI=OFF -DPARAVIEW_ENABLE_CATALYST=ON -DPARAVIEW_ENABLE_PYTHON=ON -DPARAVIEW_USE_MPI=ON -DCMAKE_INSTALL_PREFIX=$${prefix} -DBUILD_TESTING=OFF -DPARAVIEW_INSTALL_DEVELOPMENT_FILES=ON
+  - exec_in: cd ~/ParaView-v5.0.0-build && rm * -rf
+  # TOFIX break it into multiple lines to make it easy to read/change
+#  - exec_in: cd ~/ParaView-v5.0.0-build && cmake ~/ParaView-v5.0.0-source/ -G "Unix Makefiles" -DPARAVIEW_BUILD_QT_GUI=OFF -DPARAVIEW_ENABLE_CATALYST=ON -DPARAVIEW_ENABLE_PYTHON=ON -DPARAVIEW_USE_MPI=ON -DCMAKE_INSTALL_PREFIX=$${prefix} -DBUILD_TESTING=OFF -DPARAVIEW_INSTALL_DEVELOPMENT_FILES=ON
+  # TOFIX add mesa paths based on whether mesa is installed from source or not
+  # TOFIX which prefix variable is to be used? local prefix or global one? what if local mesa step prefix is different from the global one?
+  - exec_in: cd ~/ParaView-v5.0.0-build && cmake ~/ParaView-v5.0.0-source/ -G "Unix Makefiles" \
+  -DPARAVIEW_BUILD_QT_GUI=OFF \
+  -DPARAVIEW_ENABLE_CATALYST=ON \
+  -DPARAVIEW_ENABLE_PYTHON=ON \
+  -DPARAVIEW_USE_MPI=ON \
+  -DCMAKE_INSTALL_PREFIX=$${prefix} \
+  -DBUILD_TESTING=OFF \
+  -DVTK_USE_X=OFF \
+  -DOPENGL_INCLUDE_DIR=$${prefix}/include \
+  # TOFIX is it better to use .a or .so lib?
+  -DOPENGL_gl_LIBRARY=$${prefix}/lib/libOSMesa.so \
+  -DOPENGL_glu_LIBRARY=$${prefix}/lib/libGLU.so \
+  -DVTK_OPENGL_HAS_OSMESA=ON \
+  -DOSMESA_INCLUDE_DIR=$${prefix}/include \
+  -DOSMESA_LIBRARY=$${prefix}/lib/libOSMesa.so \
+  
   # TOFIX add a checkpoint
   - exec_in: checkpoint!!!
   - exec_in: cd ~/ParaView-v5.0.0-build && make -j24 && make -j24 install
