@@ -59,4 +59,5 @@ setup:
 export:
 #  - test_mesa:
 #  - test_paraview:
-#  - "@base"
+  - clear_builds: 
+  - "@base"
