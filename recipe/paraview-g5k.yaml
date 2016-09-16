@@ -7,7 +7,8 @@
 #==============================================================================
 
 ---
-extend: default/grid5000/debian7.yaml
+#extend: default/grid5000/debian7.yaml
+extend: default/grid5000/debian8.yaml
 
 global:
     # You can see the base template `default/grid5000/debian7.yaml` to know the
@@ -16,15 +17,16 @@ global:
     # Grid5000 variables
     g5k_user: lrahmani
     g5k_site: reims
-    kenv: "wheezy-x64-nfs"
+#    kenv: "wheezy-x64-nfs"
+    kenv: "jessie-x64-nfs"
     walltime: "06:00"
 
     # Build variables
     install_prefix: /opt/$${kameleon_recipe_name}
-    # TOFIX don't forget to check that the folder has read access to others
+    # TOFIX don't forget to check that the folder has read access to every one
     pkgs_repo: /home/lrahmani/packages
     
-# TOFIX comment @base to avoid re-deployement of base image for the same reservation
+# TOFIX comment @base to avoid default re-configuration for the same reservation
 # TOFIX uncomment it if you want to work on clean base image
 bootstrap:
   - "@base"
@@ -33,20 +35,26 @@ setup:
 # TOFIX to avoid default setup for the same reservation
 # TOFIX check checkpointing system
   - "@base"
+#  - install_mpich_src:
 #  - install_mpich:
-  - install_cmake:
-  - install_hdf5:
-  # TOFIX don't need prefix when installed with apt
-  # TOFIX how to make this transparent to the rest of recipe, 
-  # TOCHECK mesa with GPUs
-  #- install_mesa:
-  - install_mesa_src:
-    - prefix: $${install_prefix}
-    - package: $${pkgs_repo}/mesa-11.0.0-rc3.tar.gz
-  # TOFIX change to install_paraview_catalyst_src
-  #- install_paraview_catalyst:
-  #  - prefix: $${install_prefix}
-  #  - package: $${pkgs_repo}/ParaView-v5.0.0-source.tar.gz
+#  - install_cmake:
+#  - install_hdf5:
+#    # TOFIX don't need prefix when installed with apt
+#    # TOFIX how to make this transparent to the rest of recipe, 
+#    # TOFIX  in the case where hdf5_src is used
+#    #- prefix: $${install_prefix} 
+#  - install_hdf5_src:
+#  # TOCHECK mesa with GPUs
+#  - install_mesa:
+#  - install_mesa_src:
+  - install_mesa_src_dep:
+# TOFIX change to install_paraview_catalyst_src
+#  - install_paraview_catalyst:
+#    - prefix: $${install_prefix}
+#    - package: $${pkgs_repo}/ParaView-v5.0.0-source.tar.gz
+  - install_paraview_catalyst_src_dep:
+#    - prefix: $${install_prefix}
+#    - package: $${pkgs_repo}/ParaView-v5.0.0-source.tar.gz
 
 export:
 #  - test_mesa:
