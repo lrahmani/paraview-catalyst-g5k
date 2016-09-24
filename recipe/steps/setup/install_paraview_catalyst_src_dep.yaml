@@ -15,7 +15,12 @@
 - paraview_install:
   - exec_in: mkdir ParaView-v5.0.0-build/
   - exec_in: cd ParaView-v5.0.0-build/
-  - exec_in: cd ParaView-v5.0.0-build/ && cmake ../ParaView-v5.0.0-source/ -G "Unix Makefiles" -DPARAVIEW_BUILD_QT_GUI=OFF -DPARAVIEW_ENABLE_CATALYST=ON -DPARAVIEW_ENABLE_PYTHON=ON -DPARAVIEW_USE_MPI=ON -DCMAKE_INSTALL_PREFIX=/opt/ -DBUILD_TESTING=OFF -DPARAVIEW_INSTALL_DEVELOPMENT_FILES=ON -DVTK_USE_X=OFF -DOPENGL_INCLUDE_DIR=/opt/include/GL/ -DOPENGL_gl_LIBRARY=/opt/lib/libOSMesa.so -DOPENGL_glu_LIBRARY=/opt/lib/libGLU.so -DVTK_OPENGL_HAS_OSMESA=ON -DOSMESA_INCLUDE_DIR=/opt/include/GL/ -DOSMESA_LIBRARY=/opt/lib/libOSMesa.so
+  - exec_in: cd ParaView-v5.0.0-build/ && cmake ../ParaView-v5.0.0-source/ -G "Unix Makefiles"    \
+    -DPARAVIEW_BUILD_QT_GUI=OFF -DPARAVIEW_ENABLE_CATALYST=ON -DPARAVIEW_ENABLE_PYTHON=ON         \
+    -DPARAVIEW_USE_MPI=ON -DCMAKE_INSTALL_PREFIX=/opt/ -DBUILD_TESTING=OFF                        \
+    -DPARAVIEW_INSTALL_DEVELOPMENT_FILES=ON -DVTK_USE_X=OFF -DOPENGL_INCLUDE_DIR=/opt/include/GL/ \ 
+    -DOPENGL_gl_LIBRARY=/opt/lib/libOSMesa.so -DOPENGL_glu_LIBRARY=/opt/lib/libGLU.so             \
+    -DVTK_OPENGL_HAS_OSMESA=ON -DOSMESA_INCLUDE_DIR=/opt/include/GL/ -DOSMESA_LIBRARY=/opt/lib/libOSMesa.so
   - exec_in: cd ParaView-v5.0.0-build/ && make -j24 && make -j24 install
 
 - paraview_exports:
