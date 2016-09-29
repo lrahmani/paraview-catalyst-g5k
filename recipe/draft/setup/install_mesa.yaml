@@ -1,0 +1,8 @@
+- install_x_dependencies:
+  - exec_in: apt-get update
+  - exec_in: apt-get install libxext-dev libxt-dev libxi-dev libxmu-dev --assume-yes
+- install_mesa_apt:
+  # TOFIX is update needed?
+  - exec_in: apt-get update
+  - exec_in: apt-get install freeglut3-dev libegl1-mesa-dev --assume-yes
+

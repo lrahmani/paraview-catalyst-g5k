@@ -1,0 +1,6 @@
+- cmake_install: 
+  # TOFIX is updated needed?
+  - exec_in: apt-get update 
+  - exec_in: apt-get install cmake --assume-yes
+
+

@@ -1,0 +1,4 @@
+- install_h5_apt:
+  # TOFIX not needed as it's already done in the bootstrap section
+  - exec_in: apt-get update
+  - exec_in: apt-get install zlib1g-dev libhdf5-dev hdf5-tools --assume-yes
