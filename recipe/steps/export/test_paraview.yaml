@@ -1,9 +1,0 @@
-Running the Server
-===================
-mpirun -np 24 /opt/bin/pvserver -display localhost:0 --use-offscreen-rendering
-
-Running the Client and Connecting to the Server
-===============================================
-paraview
-ssh -f stremi-7.reims.g5k -L 11111:stremi-7:11111 -N
-
