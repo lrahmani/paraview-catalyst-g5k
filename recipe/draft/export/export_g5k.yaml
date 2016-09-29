@@ -1,0 +1,4 @@
+- save_as_g5k:
+  - exec_local: ssh root@node tgz-g5k > $.tgz
+
+  
