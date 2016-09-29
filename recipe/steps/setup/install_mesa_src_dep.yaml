@@ -12,7 +12,12 @@
 - mesa_install:
   - exec_in: cd mesa-11.0.0-rc3/
   # Need to solve the problem of working dir
-  - exec_in: cd mesa-11.0.0-rc3/ && ./configure CXXFLAGS="-O2 -g -DDEFAULT_SOFTWARE_DEPTH_BITS=31" CFLAGS="-O2 -g -DDEFAULT_SOFTWARE_DEPTH_BITS=31" --disable-xvmc --disable-glx --disable-dri --with-dri-drivers="" --with-gallium-drivers="swrast" --enable-texture-float --disable-egl --with-egl-platforms="" --enable-gallium-osmesa --enable-gallium-llvm=yes --with-llvm-shared-libs --prefix=/opt/ --disable-driglx-direct --disable-egl --disable-dri --with-gallium-drivers=swrast
+  - exec_in: cd mesa-11.0.0-rc3/ && ./configure CXXFLAGS="-O2 -g -DDEFAULT_SOFTWARE_DEPTH_BITS=31"     \
+      CFLAGS="-O2 -g -DDEFAULT_SOFTWARE_DEPTH_BITS=31"                                                 \
+      --disable-xvmc --disable-glx --disable-dri --with-dri-drivers="" --with-gallium-drivers="swrast" \
+      --enable-texture-float --disable-egl --with-egl-platforms="" --enable-gallium-osmesa             \
+      --enable-gallium-llvm=yes --with-llvm-shared-libs --prefix=/opt/ --disable-driglx-direct         \
+      --disable-egl --disable-dri --with-gallium-drivers=swrast
   - exec_in: cd mesa-11.0.0-rc3/ && make -j24 && make -j24 install
 
 - mesa_exports:
